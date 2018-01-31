@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\res\\merged\\debug\\anim\\crt_tv_vertical.xml",
+        "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\anim\\crt_tv_vertical.xml"
+    },
+    {
+        "merged": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\res\\merged\\debug\\anim\\crt_tv.xml",
+        "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\anim\\crt_tv.xml"
+    },
+    {
+        "merged": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\res\\merged\\debug\\anim\\scale_down.xml",
+        "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\anim\\scale_down.xml"
+    },
+    {
+        "merged": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\res\\merged\\debug\\anim\\bounce.xml",
+        "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\anim\\bounce.xml"
+    },
+    {
+        "merged": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\res\\merged\\debug\\anim\\scale_down_bottom.xml",
+        "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\anim\\scale_down_bottom.xml"
+    }
+]
