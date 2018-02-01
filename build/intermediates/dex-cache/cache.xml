@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\gkillershots\AndroidStudioProjects\screenonanimation\app\libs\android-support-v13.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="0c39cec0634e45ef67a1041708cf2d63b1a816b7">
+        <dex dex="C:\Users\gkillershots\AndroidStudioProjects\screenonanimation\app\build\intermediates\pre-dexed\debug\android-support-v13_23446691da80803682dc00148bafc5f1deffaead.jar" />
+    </item>
+
+</items>

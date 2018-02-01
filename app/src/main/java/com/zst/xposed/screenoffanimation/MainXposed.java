@@ -63,6 +63,7 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 	public void initZygote(StartupParam startupParam) throws Throwable {
 		sModRes = XModuleResources.createInstance(startupParam.modulePath, null);
 		sPref = new XSharedPreferences(Common.PACKAGE_THIS, Common.Pref.PREF_MAIN);
+		refreshSettings();
 	}
 	
 	@Override
@@ -73,7 +74,7 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 		}
 		if (!lpparam.packageName.equals("android")) return;
 		
-		refreshSettings();
+		//refreshSettings();
 		
 		try { // late Android 4.2.1 onwards (built after Aug 15, 2012)
 			final Class<?> hookClass = XposedHelpers.findClass(

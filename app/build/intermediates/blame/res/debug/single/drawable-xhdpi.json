@@ -88,12 +88,12 @@
         "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\drawable-xhdpi\\purple_switch_bg_focused_holo_light.9.png"
     },
     {
-        "merged": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\purple_btn_check_on_disabled_focused_holo_light.png",
-        "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\drawable-xhdpi\\purple_btn_check_on_disabled_focused_holo_light.png"
-    },
-    {
         "merged": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\purple_scrubber_control_pressed_holo.png",
         "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\drawable-xhdpi\\purple_scrubber_control_pressed_holo.png"
+    },
+    {
+        "merged": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\purple_btn_check_on_disabled_focused_holo_light.png",
+        "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\drawable-xhdpi\\purple_btn_check_on_disabled_focused_holo_light.png"
     },
     {
         "merged": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\purple_switch_thumb_activated_holo_light.9.png",

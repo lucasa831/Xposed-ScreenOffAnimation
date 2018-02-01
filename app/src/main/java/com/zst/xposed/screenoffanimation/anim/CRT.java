@@ -25,6 +25,8 @@ import com.zst.xposed.screenoffanimation.helpers.Utils;
 import com.zst.xposed.screenoffanimation.widgets.AnimationEndListener;
 
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
+import de.robv.android.xposed.XposedHelpers;
+
 public class CRT extends AnimImplementation {
 	/**
 	 * Electron Beam (CRT) Animation
@@ -35,7 +37,7 @@ public class CRT extends AnimImplementation {
 		view.setScaleType(ScaleType.FIT_XY);
 		view.setImageBitmap(ScreenshotUtil.takeScreenshot(ctx));
 		view.setBackgroundColor(Color.WHITE);
-
+		//view.setBackgroundResource(R.drawable.crtback);
 		final AlphaAnimation alpha = new AlphaAnimation(1.25f, 0) {
 			@Override
 			@SuppressWarnings("deprecation")

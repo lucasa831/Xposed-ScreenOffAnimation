@@ -1,0 +1,410 @@
+[
+    {
+        "outputFile": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-zh-rTW\\values-zh-rTW.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 48,
+                    "endOffset": 99
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 4,
+                        "startOffset": 954,
+                        "endColumn": 48,
+                        "endOffset": 998
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 104,
+                    "endColumn": 57,
+                    "endOffset": 157
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 21,
+                        "startColumn": 4,
+                        "startOffset": 1003,
+                        "endColumn": 57,
+                        "endOffset": 1056
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 162,
+                    "endColumn": 42,
+                    "endOffset": 200
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 911,
+                        "endColumn": 42,
+                        "endOffset": 949
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 205,
+                    "endColumn": 52,
+                    "endOffset": 253
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 24,
+                        "startColumn": 4,
+                        "startOffset": 1158,
+                        "endColumn": 52,
+                        "endOffset": 1206
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 258,
+                    "endColumn": 42,
+                    "endOffset": 296
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 4,
+                        "startOffset": 809,
+                        "endColumn": 42,
+                        "endOffset": 847
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 301,
+                    "endColumn": 58,
+                    "endOffset": 355
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 4,
+                        "startOffset": 852,
+                        "endColumn": 58,
+                        "endOffset": 906
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 360,
+                    "endColumn": 48,
+                    "endOffset": 404
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 22,
+                        "startColumn": 4,
+                        "startOffset": 1061,
+                        "endColumn": 48,
+                        "endOffset": 1105
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 409,
+                    "endColumn": 47,
+                    "endOffset": 452
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 23,
+                        "startColumn": 4,
+                        "startOffset": 1110,
+                        "endColumn": 47,
+                        "endOffset": 1153
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 457,
+                    "endColumn": 66,
+                    "endOffset": 519
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 99,
+                        "endColumn": 66,
+                        "endOffset": 161
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 11,
+                    "startColumn": 4,
+                    "startOffset": 524,
+                    "endColumn": 43,
+                    "endOffset": 563
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endColumn": 43,
+                        "endOffset": 94
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 12,
+                    "startColumn": 4,
+                    "startOffset": 568,
+                    "endLine": 13,
+                    "endColumn": 28,
+                    "endOffset": 639
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 166,
+                        "endLine": 5,
+                        "endColumn": 28,
+                        "endOffset": 237
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 14,
+                    "startColumn": 4,
+                    "startOffset": 644,
+                    "endColumn": 67,
+                    "endOffset": 707
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 301,
+                        "endColumn": 67,
+                        "endOffset": 364
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 712,
+                    "endColumn": 58,
+                    "endOffset": 766
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 242,
+                        "endColumn": 58,
+                        "endOffset": 296
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 16,
+                    "startColumn": 4,
+                    "startOffset": 771,
+                    "endColumn": 43,
+                    "endOffset": 810
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 564,
+                        "endColumn": 43,
+                        "endOffset": 603
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 17,
+                    "startColumn": 4,
+                    "startOffset": 815,
+                    "endColumn": 52,
+                    "endOffset": 863
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 608,
+                        "endColumn": 52,
+                        "endOffset": 656
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 18,
+                    "startColumn": 4,
+                    "startOffset": 868,
+                    "endColumn": 45,
+                    "endOffset": 909
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 518,
+                        "endColumn": 45,
+                        "endOffset": 559
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 19,
+                    "startColumn": 4,
+                    "startOffset": 914,
+                    "endColumn": 46,
+                    "endOffset": 956
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 4,
+                        "startOffset": 706,
+                        "endColumn": 46,
+                        "endOffset": 748
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 20,
+                    "startColumn": 4,
+                    "startOffset": 961,
+                    "endColumn": 55,
+                    "endOffset": 1012
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 753,
+                        "endColumn": 55,
+                        "endOffset": 804
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 21,
+                    "startColumn": 4,
+                    "startOffset": 1017,
+                    "endColumn": 44,
+                    "endOffset": 1057
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 661,
+                        "endColumn": 44,
+                        "endOffset": 701
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 22,
+                    "startColumn": 4,
+                    "startOffset": 1062,
+                    "endLine": 23,
+                    "endColumn": 37,
+                    "endOffset": 1150
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 425,
+                        "endLine": 10,
+                        "endColumn": 37,
+                        "endOffset": 513
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 24,
+                    "startColumn": 4,
+                    "startOffset": 1155,
+                    "endColumn": 55,
+                    "endOffset": 1206
+                },
+                "from": {
+                    "file": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\values-zh-rTW\\strings.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 369,
+                        "endColumn": 55,
+                        "endOffset": 420
+                    }
+                }
+            }
+        ]
+    }
+]
