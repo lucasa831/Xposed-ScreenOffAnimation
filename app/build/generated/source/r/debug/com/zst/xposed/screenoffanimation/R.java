@@ -14,6 +14,7 @@ public final class R {
         public static final int crt_tv_vertical=0x7f040002;
         public static final int scale_down=0x7f040003;
         public static final int scale_down_bottom=0x7f040004;
+        public static final int sidefill=0x7f040005;
     }
     public static final class attr {
     }
@@ -29,41 +30,42 @@ public final class R {
     }
     public static final class drawable {
         public static final int bg_card_ui=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int purple_btn_check_holo_light=0x7f020002;
-        public static final int purple_btn_check_off_disabled_focused_holo_light=0x7f020003;
-        public static final int purple_btn_check_off_disabled_holo_light=0x7f020004;
-        public static final int purple_btn_check_off_focused_holo_light=0x7f020005;
-        public static final int purple_btn_check_off_holo_light=0x7f020006;
-        public static final int purple_btn_check_off_pressed_holo_light=0x7f020007;
-        public static final int purple_btn_check_on_disabled_focused_holo_light=0x7f020008;
-        public static final int purple_btn_check_on_disabled_holo_light=0x7f020009;
-        public static final int purple_btn_check_on_focused_holo_light=0x7f02000a;
-        public static final int purple_btn_check_on_holo_light=0x7f02000b;
-        public static final int purple_btn_check_on_pressed_holo_light=0x7f02000c;
-        public static final int purple_btn_default_holo_light=0x7f02000d;
-        public static final int purple_scrubber_control_disabled_holo=0x7f02000e;
-        public static final int purple_scrubber_control_focused_holo=0x7f02000f;
-        public static final int purple_scrubber_control_normal_holo=0x7f020010;
-        public static final int purple_scrubber_control_pressed_holo=0x7f020011;
-        public static final int purple_scrubber_control_selector_holo_light=0x7f020012;
-        public static final int purple_scrubber_primary_holo=0x7f020013;
-        public static final int purple_scrubber_progress_horizontal_holo_light=0x7f020014;
-        public static final int purple_scrubber_secondary_holo=0x7f020015;
-        public static final int purple_scrubber_track_holo_light=0x7f020016;
-        public static final int purple_switch_bg_disabled_holo_light=0x7f020017;
-        public static final int purple_switch_bg_focused_holo_light=0x7f020018;
-        public static final int purple_switch_bg_holo_light=0x7f020019;
-        public static final int purple_switch_inner_holo_light=0x7f02001a;
-        public static final int purple_switch_thumb_activated_holo_light=0x7f02001b;
-        public static final int purple_switch_thumb_disabled_holo_light=0x7f02001c;
-        public static final int purple_switch_thumb_holo_light=0x7f02001d;
-        public static final int purple_switch_thumb_pressed_holo_light=0x7f02001e;
-        public static final int purple_switch_track_holo_light=0x7f02001f;
-        public static final int selectable_background_purpleholo=0x7f020020;
-        public static final int selectable_background_whiteholo=0x7f020021;
-        public static final int selectable_list_selector_bg_transition=0x7f020022;
-        public static final int selectable_listview=0x7f020023;
+        public static final int crtback=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int purple_btn_check_holo_light=0x7f020003;
+        public static final int purple_btn_check_off_disabled_focused_holo_light=0x7f020004;
+        public static final int purple_btn_check_off_disabled_holo_light=0x7f020005;
+        public static final int purple_btn_check_off_focused_holo_light=0x7f020006;
+        public static final int purple_btn_check_off_holo_light=0x7f020007;
+        public static final int purple_btn_check_off_pressed_holo_light=0x7f020008;
+        public static final int purple_btn_check_on_disabled_focused_holo_light=0x7f020009;
+        public static final int purple_btn_check_on_disabled_holo_light=0x7f02000a;
+        public static final int purple_btn_check_on_focused_holo_light=0x7f02000b;
+        public static final int purple_btn_check_on_holo_light=0x7f02000c;
+        public static final int purple_btn_check_on_pressed_holo_light=0x7f02000d;
+        public static final int purple_btn_default_holo_light=0x7f02000e;
+        public static final int purple_scrubber_control_disabled_holo=0x7f02000f;
+        public static final int purple_scrubber_control_focused_holo=0x7f020010;
+        public static final int purple_scrubber_control_normal_holo=0x7f020011;
+        public static final int purple_scrubber_control_pressed_holo=0x7f020012;
+        public static final int purple_scrubber_control_selector_holo_light=0x7f020013;
+        public static final int purple_scrubber_primary_holo=0x7f020014;
+        public static final int purple_scrubber_progress_horizontal_holo_light=0x7f020015;
+        public static final int purple_scrubber_secondary_holo=0x7f020016;
+        public static final int purple_scrubber_track_holo_light=0x7f020017;
+        public static final int purple_switch_bg_disabled_holo_light=0x7f020018;
+        public static final int purple_switch_bg_focused_holo_light=0x7f020019;
+        public static final int purple_switch_bg_holo_light=0x7f02001a;
+        public static final int purple_switch_inner_holo_light=0x7f02001b;
+        public static final int purple_switch_thumb_activated_holo_light=0x7f02001c;
+        public static final int purple_switch_thumb_disabled_holo_light=0x7f02001d;
+        public static final int purple_switch_thumb_holo_light=0x7f02001e;
+        public static final int purple_switch_thumb_pressed_holo_light=0x7f02001f;
+        public static final int purple_switch_track_holo_light=0x7f020020;
+        public static final int selectable_background_purpleholo=0x7f020021;
+        public static final int selectable_background_whiteholo=0x7f020022;
+        public static final int selectable_list_selector_bg_transition=0x7f020023;
+        public static final int selectable_listview=0x7f020024;
     }
     public static final class id {
         public static final int layout_off_anim=0x7f090005;
@@ -106,9 +108,10 @@ public final class R {
         public static final int anim_random_note=0x7f050016;
         public static final int anim_scale_down=0x7f050005;
         public static final int anim_scale_down_bottom=0x7f05001d;
+        public static final int anim_side_fill=0x7f05001e;
         public static final int anim_tv_burn=0x7f050006;
         public static final int anim_vertu_sig=0x7f050017;
-        public static final int anim_wp8=0x7f05001e;
+        public static final int anim_wp8=0x7f05001f;
         public static final int app_info=0x7f050007;
         public static final int app_name=0x7f050008;
         public static final int error_animating=0x7f050009;

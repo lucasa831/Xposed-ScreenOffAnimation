@@ -27,6 +27,7 @@ public class Common {
 		public final static int FLIP = 12;
 		public final static int WP8 = 13;
 		public final static int FLIP_TILES = 14;
+		public final static int SIDE_FILL = 15;
 		public final static int RANDOM = 99;
 	}
 	

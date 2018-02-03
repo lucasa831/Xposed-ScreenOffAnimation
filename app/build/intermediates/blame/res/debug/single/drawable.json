@@ -8,6 +8,10 @@
         "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\drawable\\selectable_list_selector_bg_transition.xml"
     },
     {
+        "merged": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\crtback.png",
+        "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\drawable\\crtback.png"
+    },
+    {
         "merged": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\purple_scrubber_control_selector_holo_light.xml",
         "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\drawable\\purple_scrubber_control_selector_holo_light.xml"
     },

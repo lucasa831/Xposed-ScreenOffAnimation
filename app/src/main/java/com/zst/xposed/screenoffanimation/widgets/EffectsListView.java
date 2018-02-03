@@ -45,6 +45,7 @@ public abstract class EffectsListView extends ListView {
 		adapter.add(new Effect(context, R.string.anim_3dflip, Common.Anim.FLIP));
 		adapter.add(new Effect(context, R.string.anim_wp8, Common.Anim.WP8));
 		adapter.add(new Effect(context, R.string.anim_flip_tiles, Common.Anim.FLIP_TILES));
+		adapter.add(new  Effect(context, R.string.anim_side_fill, Common.Anim.SIDE_FILL));
 		adapter.add(new Effect(context, R.string.anim_random, Common.Anim.RANDOM));
 		return adapter;
 	}

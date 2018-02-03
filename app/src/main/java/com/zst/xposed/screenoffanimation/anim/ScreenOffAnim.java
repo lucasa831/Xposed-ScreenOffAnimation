@@ -1,9 +1,5 @@
 package com.zst.xposed.screenoffanimation.anim;
 
-import com.zst.xposed.screenoffanimation.MainXposed;
-import com.zst.xposed.screenoffanimation.helpers.TouchConsumer;
-import com.zst.xposed.screenoffanimation.helpers.Utils;
-
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -15,8 +11,14 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import de.robv.android.xposed.XposedHelpers;
+
+import com.zst.xposed.screenoffanimation.MainXposed;
+import com.zst.xposed.screenoffanimation.helpers.TouchConsumer;
+import com.zst.xposed.screenoffanimation.helpers.Utils;
+
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
+import de.robv.android.xposed.XposedHelpers;
+
 import static android.view.WindowManager.LayoutParams.FIRST_SYSTEM_WINDOW;
 
 public abstract class ScreenOffAnim {
@@ -100,7 +102,8 @@ public abstract class ScreenOffAnim {
 	}
 	
 	public abstract void animateScreenOffView();
-	
+
+
 	public void finishScreenOffAnim() {
 		MainXposed.mAnimationRunning = false;
 		try {

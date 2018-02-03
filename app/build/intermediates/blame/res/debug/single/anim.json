@@ -16,6 +16,10 @@
         "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\anim\\bounce.xml"
     },
     {
+        "merged": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\res\\merged\\debug\\anim\\sidefill.xml",
+        "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\anim\\sidefill.xml"
+    },
+    {
         "merged": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\build\\intermediates\\res\\merged\\debug\\anim\\scale_down_bottom.xml",
         "source": "C:\\Users\\gkillershots\\AndroidStudioProjects\\screenonanimation\\app\\src\\main\\res\\anim\\scale_down_bottom.xml"
     }

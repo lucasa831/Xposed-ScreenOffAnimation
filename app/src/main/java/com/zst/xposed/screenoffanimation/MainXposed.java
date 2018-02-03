@@ -21,6 +21,7 @@ import com.zst.xposed.screenoffanimation.anim.LGOptimusG;
 import com.zst.xposed.screenoffanimation.anim.LollipopFadeOut;
 import com.zst.xposed.screenoffanimation.anim.ScaleDown;
 import com.zst.xposed.screenoffanimation.anim.ScaleDownBottom;
+import com.zst.xposed.screenoffanimation.anim.SideFill;
 import com.zst.xposed.screenoffanimation.anim.TVBurnIn;
 import com.zst.xposed.screenoffanimation.anim.VertuSigTouch;
 import com.zst.xposed.screenoffanimation.anim.WP8;
@@ -349,6 +350,8 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 			return new WP8();
 		case Common.Anim.FLIP_TILES:
 			return new FlipTiles();
+		case Common.Anim.SIDE_FILL:
+				return new SideFill();
 		case Common.Anim.RANDOM:
 			try {
 				if (on) {

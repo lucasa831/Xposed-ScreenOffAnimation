@@ -1,8 +1,5 @@
 package com.zst.xposed.screenoffanimation.anim;
 
-import com.zst.xposed.screenoffanimation.MainXposed;
-import com.zst.xposed.screenoffanimation.helpers.Utils;
-
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -12,6 +9,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+
+import com.zst.xposed.screenoffanimation.MainXposed;
+import com.zst.xposed.screenoffanimation.helpers.Utils;
+
 import static android.view.WindowManager.LayoutParams.FIRST_SYSTEM_WINDOW;
 
 public abstract class ScreenOnAnim {
@@ -70,6 +71,9 @@ public abstract class ScreenOnAnim {
 			} else {
 				mWM.addView(mFrame, LAYOUT_PARAM);
 			}
+
+
+
 			new Handler(mContext.getMainLooper()).postDelayed(new Runnable() {
 				@Override
 				public void run() {
@@ -79,7 +83,8 @@ public abstract class ScreenOnAnim {
 						Utils.log("(ScreenOnAnim) Error animating view inside WindowManager", e);
 					}
 				}
-			}, 700);
+			}, 600);
+
 			//TODO: Custom delay
 		} catch (Exception e) {
 			Utils.log("(ScreenOnAnim) Error adding view to WindowManager", e);

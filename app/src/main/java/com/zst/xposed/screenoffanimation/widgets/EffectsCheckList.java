@@ -1,11 +1,5 @@
 package com.zst.xposed.screenoffanimation.widgets;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import com.zst.xposed.screenoffanimation.Common;
-import com.zst.xposed.screenoffanimation.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +9,12 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.zst.xposed.screenoffanimation.Common;
+import com.zst.xposed.screenoffanimation.R;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class EffectsCheckList extends ListView {
 	List<Integer> mCheckedList;
@@ -44,6 +44,7 @@ public abstract class EffectsCheckList extends ListView {
 		adapter.add(new CheckEffect(context, R.string.anim_3dflip, Common.Anim.FLIP));
 		adapter.add(new CheckEffect(context, R.string.anim_wp8, Common.Anim.WP8));
 		adapter.add(new CheckEffect(context, R.string.anim_flip_tiles, Common.Anim.FLIP_TILES));
+		adapter.add(new CheckEffect(context, R.string.anim_side_fill, Common.Anim.SIDE_FILL));
 		return adapter;
 	}
 	

@@ -40,5 +40,5 @@
     <string name="anim_3dflip">3D Flip</string>
     <string name="anim_wp8">Windows Phone 8</string>
     <string name="anim_flip_tiles">Flip Tiles</string>
-
+    <string name="anim_side_fill">Side Fill</string>
 </resources>

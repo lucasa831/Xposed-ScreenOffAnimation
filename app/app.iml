@@ -98,7 +98,5 @@
     <orderEntry type="library" exported="" name="android-support-v13" level="project" />
     <orderEntry type="library" exported="" name="XposedBridgeApi-54" level="project" />
     <orderEntry type="module" module-name="androidx" exported="" />
-    <orderEntry type="module" module-name="androidx" exported="" />
-    <orderEntry type="module" module-name="androidx" exported="" />
   </component>
 </module>

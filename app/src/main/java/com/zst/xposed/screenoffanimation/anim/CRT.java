@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Shader;
 import android.os.Build;
+import android.test.suitebuilder.annotation.Suppress;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,19 +28,20 @@ import com.zst.xposed.screenoffanimation.helpers.Utils;
 import com.zst.xposed.screenoffanimation.widgets.AnimationEndListener;
 
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
-import de.robv.android.xposed.XposedHelpers;
+
 
 public class CRT extends AnimImplementation {
 	/**
 	 * Electron Beam (CRT) Animation
 	 */
+
 	@Override
 	public void animateScreenOff(final Context ctx, WindowManager wm, MethodHookParam param, Resources res) {
 		final ImageView view = new ImageView(ctx);
 		view.setScaleType(ScaleType.FIT_XY);
 		view.setImageBitmap(ScreenshotUtil.takeScreenshot(ctx));
 		view.setBackgroundColor(Color.WHITE);
-		//view.setBackgroundResource(R.drawable.crtback);
+		//view.setBackground(res.getDrawable(R.drawable.crtback)); //waiting feedback
 		final AlphaAnimation alpha = new AlphaAnimation(1.25f, 0) {
 			@Override
 			@SuppressWarnings("deprecation")
@@ -102,8 +106,8 @@ public class CRT extends AnimImplementation {
 		final PortionView upperPortion = new PortionView(c, display.widthPixels, display.heightPixels, true);
 		final PortionView lowerPortion = new PortionView(c, display.widthPixels, display.heightPixels, false);
 
-		final BatataView rightPortion = new BatataView(c, display.widthPixels, display.heightPixels, true);
-		final BatataView leftPortion = new BatataView(c, display.widthPixels, display.heightPixels, false);
+		final SidesView rightPortion = new SidesView(c, display.widthPixels, display.heightPixels, true);
+		final SidesView leftPortion = new SidesView(c, display.widthPixels, display.heightPixels, false);
 
 		final FrameLayout layoutOn = new FrameLayout(c);
 		layoutOn.addView(upperPortion);
@@ -121,10 +125,9 @@ public class CRT extends AnimImplementation {
 			@Override
 			protected void applyTransformation(float interpolatedTime, Transformation t)
 			{
-
 				float newWidth = adjusted_width * interpolatedTime;
 
-				if(newWidth*4>=(display.widthPixels*2/3))
+				if(newWidth*4>=(display.widthPixels*0.667))
 				{
 					float newHeight = ((adjusted_height  * interpolatedTime)*anim)/4;
 					anim++;
@@ -149,6 +152,7 @@ public class CRT extends AnimImplementation {
 		final ScreenOnAnim holder = new ScreenOnAnim(c, wm) {
 			@Override
 			public void animateScreenOnView() {
+
 				layoutOn.startAnimation(anim1);
 			}
 		};
@@ -162,14 +166,14 @@ public class CRT extends AnimImplementation {
 		holder.showScreenOnView(layoutOn);
 	}
 
-	public class BatataView extends View {
+	public class SidesView extends View {
 		final Paint mPaint;
 		final boolean mTop;
 		final int mGap;
 
 		Path mPath;
 
-		public BatataView(Context context, int screenWidth, int screenHeight, boolean right)
+		public SidesView(Context context, int screenWidth, int screenHeight, boolean right)
 		{
 			super(context);
 			mPaint = new Paint();
