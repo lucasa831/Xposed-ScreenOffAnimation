@@ -3,6 +3,8 @@ package com.zst.xposed.screenoffanimation;
 import com.zst.xposed.screenoffanimation.Common.Pref;
 import com.zst.xposed.screenoffanimation.fragment.ScreenOffFragment;
 import com.zst.xposed.screenoffanimation.fragment.ScreenOnFragment;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -32,7 +34,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_viewpager);
 		
-		mPref = getSharedPreferences(Pref.PREF_MAIN, MODE_WORLD_READABLE);
+		mPref = getSharedPreferences(Pref.PREF_MAIN, Context.MODE_PRIVATE);
 		setup();
 	}
 	

@@ -1,24 +1,23 @@
 apply plugin: 'com.android.application'
 
 android {
-
-    compileSdkVersion 19
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.zst.xposed.screenoffanimation"
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.7"
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    compile files('libs/android-support-v13.jar')
-    provided files('libs/XposedBridgeApi-54.jar')
-    provided project(':androidx')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly 'de.robv.android.xposed:api:82'
 }

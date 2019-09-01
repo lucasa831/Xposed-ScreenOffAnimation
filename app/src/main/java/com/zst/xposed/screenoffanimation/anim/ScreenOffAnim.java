@@ -17,6 +17,7 @@ import com.zst.xposed.screenoffanimation.helpers.TouchConsumer;
 import com.zst.xposed.screenoffanimation.helpers.Utils;
 
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
 import static android.view.WindowManager.LayoutParams.FIRST_SYSTEM_WINDOW;
@@ -141,9 +142,10 @@ public abstract class ScreenOffAnim {
 			MainXposed.mDontAnimate = true;
 			// set to not animate so the animation hook will not
 			// be called again and go in an infinite loop
-			
-			mPM.goToSleep(SystemClock.uptimeMillis());
-			
+
+			//TODO: fix this thats crashing my compilation
+			//mPM.goToSleep(SystemClock.uptimeMillis());
+			XposedBridge.log("felt into the condition, I may have problems");
 			new Handler(mContext.getMainLooper()).postDelayed(new Runnable() {
 				@Override
 				public void run() {

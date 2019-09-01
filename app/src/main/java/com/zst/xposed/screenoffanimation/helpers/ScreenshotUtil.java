@@ -22,7 +22,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.os.Build;
+import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Surface;
@@ -58,7 +60,19 @@ public class ScreenshotUtil {
 		
 		// Take the screenshot
 		Bitmap screenBitmap;
-		if (Build.VERSION.SDK_INT >= 18) {
+		if (Build.VERSION.SDK_INT >= 28) {
+			//the method sourfacecontrol.screenshot(int, int) isn't present on 9.x+ source code
+
+			Class<?> surface_class = XposedHelpers.findClass("android.view.SurfaceControl", null);
+			//IBinder displaybinder = (IBinder)  XposedHelpers.callStaticMethod(surface_class, "getBuiltInDisplay", 0);
+			/*screenshot(Rect sourceCrop, int width, int height,
+			int minLayer, int maxLayer, boolean useIdentityTransform,
+			int rotation)*/
+
+			screenBitmap = (Bitmap) XposedHelpers.callStaticMethod(surface_class, "screenshot", new Rect(),
+					(int) dims[0], (int) dims[1], 0, 9, false, 0);
+		}
+		else if (Build.VERSION.SDK_INT >= 18) {
 			Class<?> surface_class = XposedHelpers.findClass("android.view.SurfaceControl", null);
 			screenBitmap = (Bitmap) XposedHelpers.callStaticMethod(surface_class, "screenshot",
 					(int) dims[0], (int) dims[1]);

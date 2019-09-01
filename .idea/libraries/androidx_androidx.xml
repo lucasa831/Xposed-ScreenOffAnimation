@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="androidx.androidx">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/androidx/androidx.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
+import android.os.Build;
 import android.view.WindowManager;
 
 import com.zst.xposed.screenoffanimation.Common.Pref;
@@ -64,7 +65,10 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 	public void initZygote(StartupParam startupParam) throws Throwable {
 		sModRes = XModuleResources.createInstance(startupParam.modulePath, null);
 		sPref = new XSharedPreferences(Common.PACKAGE_THIS, Common.Pref.PREF_MAIN);
-		refreshSettings();
+		if (Build.VERSION.SDK_INT >= 26) {
+			refreshSettings();
+		}
+
 	}
 	
 	@Override
@@ -74,7 +78,11 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 			return;
 		}
 		if (!lpparam.packageName.equals("android")) return;
-		
+
+		if (Build.VERSION.SDK_INT <= 25) {
+			refreshSettings();
+		}
+
 		//refreshSettings();
 		
 		try { // late Android 4.2.1 onwards (built after Aug 15, 2012)
