@@ -16,6 +16,8 @@ import com.zst.xposed.screenoffanimation.MainXposed;
 import com.zst.xposed.screenoffanimation.helpers.TouchConsumer;
 import com.zst.xposed.screenoffanimation.helpers.Utils;
 
+import java.lang.reflect.Method;
+
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -142,10 +144,21 @@ public abstract class ScreenOffAnim {
 			MainXposed.mDontAnimate = true;
 			// set to not animate so the animation hook will not
 			// be called again and go in an infinite loop
+			//Method m = XposedHelpers.findMethodExact(PowerManager.class,"goToSleep", int.class);
+			//m.setAccessible(true);
+			//m.invoke(SystemClock.uptimeMillis());;
 
-			//TODO: fix this thats crashing my compilation
+			XposedHelpers.callMethod(mPM, "goToSleep",  SystemClock.uptimeMillis());
+			//m.setAccessible(false)
+//			Method method = object.getClass().getDeclaredMethod(methodName);
+//			method.setAccessible(true);
+//			Object r = method.invoke(object);
+
+			//replaced, it needs android hidden apis to be enabled in order to work
+			//this method used to be public, even though I enabled the hidden apis it
+			//was giving me errors, so to make things futureproof I replaced it with a xposed call
 			//mPM.goToSleep(SystemClock.uptimeMillis());
-			XposedBridge.log("felt into the condition, I may have problems");
+
 			new Handler(mContext.getMainLooper()).postDelayed(new Runnable() {
 				@Override
 				public void run() {
