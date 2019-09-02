@@ -48,7 +48,7 @@ public class ScreenOnFragment extends ScreenOffFragment {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onViewCreated(View v, Bundle savedInstanceState) {
-		mPref = getActivity().getSharedPreferences(Pref.PREF_MAIN, Context.MODE_WORLD_READABLE);
+		mPref = getActivity().getSharedPreferences(Pref.PREF_MAIN, Context.MODE_PRIVATE);
 		
 		mSettingsLayout = (ViewGroup) v.findViewById(R.id.layout_on_anim);
 		
