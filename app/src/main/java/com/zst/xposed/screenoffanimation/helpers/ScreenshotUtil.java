@@ -17,6 +17,7 @@
 
 package com.zst.xposed.screenoffanimation.helpers;
 
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -68,9 +69,19 @@ public class ScreenshotUtil {
 			/*screenshot(Rect sourceCrop, int width, int height,
 			int minLayer, int maxLayer, boolean useIdentityTransform,
 			int rotation)*/
+			int rotate = display.getRotation();
+
+
+//			//not sure why but it's inverting for me so...
+			if (rotate == 1) rotate = 3;
+			else if(rotate == 3) rotate = 1;
+
 
 			screenBitmap = (Bitmap) XposedHelpers.callStaticMethod(surface_class, "screenshot", new Rect(),
-					(int) dims[0], (int) dims[1], 0, 9, false, 0);
+						(int) dims[0], (int) dims[1], 0, 9, false, rotate);
+
+			//XposedBridge.log(display.getRotation() + "  -  " + rotate);
+
 		}
 		else if (Build.VERSION.SDK_INT >= 18) {
 			Class<?> surface_class = XposedHelpers.findClass("android.view.SurfaceControl", null);
@@ -84,8 +95,9 @@ public class ScreenshotUtil {
 		if (screenBitmap == null) {
 			return null;
 		}
-		
-		if (requiresRotation) {
+
+		//the method from android 9.x+ has built in rotation... also this throws an exception
+		if (requiresRotation && Build.VERSION.SDK_INT < 28) {
 			// Rotate the screenshot to the current orientation
 			Bitmap ss = Bitmap.createBitmap(displayMetrics.widthPixels,
 					displayMetrics.heightPixels, Bitmap.Config.ARGB_8888);
