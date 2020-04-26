@@ -60,7 +60,10 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 	static int mOnAnimationIndex = Common.Pref.Def.EFFECT;
 	static int mOnAnimationSpeed = Common.Pref.Def.SPEED;
 	static List<Integer> mOnRandomAnimList;
-	
+
+	public static boolean mShouldOverrideStockDelay = Common.Pref.Def.ENABLED;
+	public static int mOverrideDelayValue = Common.Pref.Def.STOCK_DELAY;
+
 	@Override
 	public void initZygote(StartupParam startupParam) throws Throwable {
 		sModRes = XModuleResources.createInstance(startupParam.modulePath, null);
@@ -378,7 +381,8 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 	
 	private void refreshSettings() {
 		sPref.reload();
-		
+
+
 		mEnabled = sPref.getBoolean(Common.Pref.Key.ENABLED, Common.Pref.Def.ENABLED);
 		mAnimationIndex = sPref.getInt(Common.Pref.Key.EFFECT, Common.Pref.Def.EFFECT);
 		mAnimationSpeed = sPref.getInt(Common.Pref.Key.SPEED, Common.Pref.Def.SPEED);
@@ -390,7 +394,10 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 		mOnAnimationSpeed = sPref.getInt(Common.Pref.Key.ON_SPEED, Common.Pref.Def.SPEED);
 		mOnRandomAnimList = Utils.integerSplitByCommaToArrayList(
 				sPref.getString(Pref.Key.ON_RANDOM_LIST, Pref.Def.RANDOM_LIST));
-		
+
+		mShouldOverrideStockDelay = sPref.getBoolean(Pref.Key.ENABLE_DEFAULT_DELAY_OVERRIDE, Common.Pref.Def.ENABLED);
+		mOverrideDelayValue = sPref.getInt(Pref.Key.DELAY_OVERRIDE_SPEED, Pref.Def.STOCK_DELAY);
+
 		mAnimationRunning = false;
 	}
 }

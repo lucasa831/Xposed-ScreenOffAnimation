@@ -46,6 +46,11 @@ public class Common {
 			public final static String ON_EFFECT = "wake_effect";
 			public final static String ON_SPEED = "wake_speed";
 			public final static String ON_RANDOM_LIST = "wake_random";
+
+			//custom delay before screen on animation
+			public final static String ENABLE_DEFAULT_DELAY_OVERRIDE = "override_delay_enabled";
+			public final static String DELAY_OVERRIDE_SPEED = "override_delay_speed";
+
 		}
 		
 		// Preference Default Values
@@ -53,7 +58,10 @@ public class Common {
 			public final static boolean ENABLED = false;
 			public final static int EFFECT = Anim.FADE;
 			public final static int SPEED = 300;
+			public final static int STOCK_DELAY = 600;
+
 			public final static String RANDOM_LIST = "";
+
 		}
 	}
 	

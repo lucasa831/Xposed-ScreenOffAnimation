@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Screenoffanimation.iml" filepath="$PROJECT_DIR$/Screenoffanimation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Xposed-ScreenOffAnimation.iml" filepath="$PROJECT_DIR$/Xposed-ScreenOffAnimation.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

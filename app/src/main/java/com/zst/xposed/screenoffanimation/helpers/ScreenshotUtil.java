@@ -72,7 +72,7 @@ public class ScreenshotUtil {
 			int rotate = display.getRotation();
 
 
-//			//not sure why but it's inverting for me so...
+			//not sure why but it's inverting for me so...
 			if (rotate == 1) rotate = 3;
 			else if(rotate == 3) rotate = 1;
 

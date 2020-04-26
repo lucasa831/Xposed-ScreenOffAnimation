@@ -1,8 +1,5 @@
 package com.zst.xposed.screenoffanimation.fragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,23 +10,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.zst.xposed.screenoffanimation.Common;
-import com.zst.xposed.screenoffanimation.R;
 import com.zst.xposed.screenoffanimation.Common.Pref;
-import com.zst.xposed.screenoffanimation.widgets.IntervalSeekBar;
+import com.zst.xposed.screenoffanimation.R;
 import com.zst.xposed.screenoffanimation.widgets.EffectsCheckList;
+import com.zst.xposed.screenoffanimation.widgets.IntervalSeekBar;
 import com.zst.xposed.screenoffanimation.widgets.OnEffectsListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScreenOnFragment extends ScreenOffFragment {
 	
 	private static ScreenOnFragment sScreenOnFragmentInstance;
-	
+
+	Switch mShouldOverrideStockDelay;
+    TextView mDelaySpeedText;
+    IntervalSeekBar mSeekDelaySpeed;
+
+
 	public static ScreenOnFragment getInstance() {
 		if (sScreenOnFragmentInstance == null) {
 			sScreenOnFragmentInstance = new ScreenOnFragment();
@@ -130,7 +135,39 @@ public class ScreenOnFragment extends ScreenOffFragment {
 				previewEffect(false);
 			}
 		});
-		
+
+
+        mShouldOverrideStockDelay = v.findViewById(R.id.switch_enable_custom_delay);
+        mShouldOverrideStockDelay.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mPref.edit().putBoolean(Pref.Key.ENABLE_DEFAULT_DELAY_OVERRIDE, isChecked).commit();
+                updateSettings();
+            }
+        });
+
+        mDelaySpeedText = v.findViewById(R.id.tV_custom_delay_speed_value);
+        mSeekDelaySpeed = v.findViewById(R.id.seekBar_custom_delay);
+
+        mSeekDelaySpeed.setAttr(2000, 100, 10);
+        mSeekDelaySpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            boolean mFromUser;
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (mFromUser) {
+                    mPref.edit().putInt(Pref.Key.DELAY_OVERRIDE_SPEED, mSeekDelaySpeed.getRealProgress()).commit();
+                    updateSettings();
+                }
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mFromUser = fromUser;
+                mDelaySpeedText.setText(mSeekDelaySpeed.getRealProgress() + " ms");
+            }
+        });
+
 		loadPref();
 	}
 	
@@ -161,5 +198,13 @@ public class ScreenOnFragment extends ScreenOffFragment {
 		mSettingsLayout.setVisibility(enabled ? View.VISIBLE : View.GONE);
 		mSeekSpeed.setRealProgress(speed);
 		mTextSpeed.setText(speed + " ms");
+
+
+		final boolean shouldOverrideStockDelay = mPref.getBoolean(Pref.Key.ENABLE_DEFAULT_DELAY_OVERRIDE, Pref.Def.ENABLED);
+        final int delaySpeedOverride = mPref.getInt(Pref.Key.DELAY_OVERRIDE_SPEED, Pref.Def.STOCK_DELAY);
+
+        mShouldOverrideStockDelay.setChecked(shouldOverrideStockDelay);
+        mSeekDelaySpeed.setRealProgress(delaySpeedOverride);
+        mDelaySpeedText.setText(delaySpeedOverride + " ms");
 	}
 }

@@ -73,6 +73,9 @@ public abstract class ScreenOnAnim {
 			}
 
 
+			int delay = 600;
+			if(MainXposed.mShouldOverrideStockDelay)
+				delay = MainXposed.mOverrideDelayValue;
 
 			new Handler(mContext.getMainLooper()).postDelayed(new Runnable() {
 				@Override
@@ -83,7 +86,7 @@ public abstract class ScreenOnAnim {
 						Utils.log("(ScreenOnAnim) Error animating view inside WindowManager", e);
 					}
 				}
-			}, 600);
+			}, delay);
 
 			//TODO: Custom delay
 		} catch (Exception e) {

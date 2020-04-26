@@ -33,8 +33,8 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_height="26dp"
             android:text="@string/setting_anim"
             android:textColor="@color/theme_color"
             android:textSize="@dimen/text_medium" />
@@ -89,7 +89,7 @@
         <com.zst.xposed.screenoffanimation.widgets.IntervalSeekBar
             android:id="@+id/seekBar_speed"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="35dp"
             android:layout_weight="1"
             android:max="1900" />
 
@@ -113,6 +113,7 @@
             android:layout_weight="1"
             android:minHeight="42dip"
             android:text="@string/setting_preview_button" />
+
     </LinearLayout>
 
 </LinearLayout>
