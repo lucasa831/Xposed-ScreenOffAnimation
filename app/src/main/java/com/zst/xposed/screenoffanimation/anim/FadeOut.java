@@ -30,7 +30,7 @@ public class FadeOut extends AnimImplementation {
 			@Override
 			public void onAnimationEnd(Animation a) {
 				holder.mFrame.setBackgroundColor(Color.BLACK);
-				finish(ctx, holder, 100);
+				releaseScreenOffAnimImpl(ctx, holder, 100);
 			}
 		});
 		holder.showScreenOffView(outline);

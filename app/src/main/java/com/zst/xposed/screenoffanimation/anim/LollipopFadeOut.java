@@ -40,7 +40,7 @@ public class LollipopFadeOut extends AnimImplementation {
 		mView = new LollipopAnimationView(ctx, screenshot) {
 			@Override
 			public void onFinishAnimation() {
-				finish(ctx, holder, 300);
+				releaseScreenOffAnimImpl(ctx, holder, 300);
 			}
 			
 		};

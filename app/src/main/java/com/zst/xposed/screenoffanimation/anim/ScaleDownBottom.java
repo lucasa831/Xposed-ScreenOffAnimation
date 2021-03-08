@@ -51,7 +51,7 @@ public class ScaleDownBottom extends AnimImplementation {
 		anim.setAnimationListener(new AnimationEndListener() {
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				finish(ctx, holder, 100);
+				releaseScreenOffAnimImpl(ctx, holder, 100);
 			}
 		});
 

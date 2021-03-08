@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_viewpager);
 		
-		mPref = getSharedPreferences(Pref.PREF_MAIN, Context.MODE_PRIVATE);
+		mPref = getSharedPreferences(Pref.PREF_MAIN, Context.MODE_WORLD_READABLE);
 		setup();
 	}
 	

@@ -48,7 +48,7 @@ public class LGOptimusG extends AnimImplementation {
 		mFinishAnimRunnable = new Runnable() {
 			@Override
 			public void run() {
-				finish(ctx, holder, 0);
+				releaseScreenOffAnimImpl(ctx, holder, 0);
 			}
 		};
 		

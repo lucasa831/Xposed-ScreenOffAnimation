@@ -80,7 +80,7 @@ public class VertuSigTouch extends AnimImplementation {
 				anim1.setAnimationListener(new AnimationEndListener() {
 					@Override
 					public void onAnimationEnd(Animation animation) {
-						finish(c, holder, 100);
+						releaseScreenOffAnimImpl(c, holder, 100);
 					}
 				});
 				anim1.setDuration((long) (anim_speed * 0.8f));

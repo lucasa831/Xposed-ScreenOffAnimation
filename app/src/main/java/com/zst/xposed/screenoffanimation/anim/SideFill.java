@@ -20,7 +20,6 @@ import com.zst.xposed.screenoffanimation.helpers.Utils;
 import com.zst.xposed.screenoffanimation.widgets.AnimationEndListener;
 
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
-import de.robv.android.xposed.XposedBridge;
 
 public class SideFill extends AnimImplementation {
 	/**
@@ -70,7 +69,7 @@ public class SideFill extends AnimImplementation {
 		anim.setAnimationListener(new AnimationEndListener() {
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				finish(ctx, holder, 100);
+				releaseScreenOffAnimImpl(ctx, holder, 100);
 			}
 		});
 		BitmapDrawable ob = new BitmapDrawable(ctx.getResources(), b);

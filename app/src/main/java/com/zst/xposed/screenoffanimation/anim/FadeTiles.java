@@ -76,7 +76,7 @@ public class FadeTiles extends AnimImplementation {
 		return new FadeTilesView(c, res, imageArray, rows, columns, size) {
 			@Override
 			public void onFinishAnimation() {
-				finish(c, mHolder, 0);
+				releaseScreenOffAnimImpl(c, mHolder, 0);
 			}
 		};
 	}

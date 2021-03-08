@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.os.Build;
@@ -67,17 +68,26 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 	@Override
 	public void initZygote(StartupParam startupParam) throws Throwable {
 		sModRes = XModuleResources.createInstance(startupParam.modulePath, null);
-		sPref = new XSharedPreferences(Common.PACKAGE_THIS, Common.Pref.PREF_MAIN);
+		//sPref = new XSharedPreferences(Common.PACKAGE_THIS, Common.Pref.PREF_MAIN);
+		sPref = getPref();
+
 		if (Build.VERSION.SDK_INT >= 26) {
 			refreshSettings();
 		}
 
+	}
+
+	//https://github.com/ElderDrivers/EdXposed/wiki/New-XSharedPreferences
+	private static XSharedPreferences getPref() {
+		XSharedPreferences pref = new XSharedPreferences(Common.PACKAGE_THIS, Pref.PREF_MAIN);
+		return pref.getFile().canRead() ? pref : null;
 	}
 	
 	@Override
 	public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
 		if (lpparam.packageName.equals(Common.PACKAGE_THIS)) {
 			hookMainActivity(lpparam);
+			//refreshSettings();
 			return;
 		}
 		if (!lpparam.packageName.equals("android")) return;
@@ -135,12 +145,17 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 						@Override
 						protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
 							int target = (Integer) param.args[0];
-							if (target == 2) {
-							} else if (target == 3) {
-							} else if (target == 4) {
-							} else {
-								param.args[1] = false;
+							switch(target)
+							{
+								case 2:
+								case 3:
+								case 4:
+									break;
+								default:
+									param.args[1] = false;
+									break;
 							}
+
 							return Utils.callOriginal(param);
 						}
 					}
@@ -268,7 +283,8 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 			XposedHelpers.findAndHookMethod(cls, "prepare", int.class,
 					XC_MethodReplacement.returnConstant(false));
 		} catch (ClassNotFoundException e) {
-			Utils.log("Attempt to remove native screen off animation failed - " + e.toString());
+			//it's no surprise if this don't work because Electron Beam is ancient, but I'm moving the catch to show only
+			//if both fails, because people think that this is the reason the app is not working for them.
 			try {
 				Class.forName("com.android.server.display.ColorFade", false, lpp.classLoader);
 				final Class<?> cls = XposedHelpers.findClass("com.android.server.display.ColorFade",
@@ -277,6 +293,7 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 						XC_MethodReplacement.returnConstant(false));
 			} catch (ClassNotFoundException e1) {
 				Utils.log("Attempt to remove native screen off animation failed - " + e1.toString());
+				Utils.log("Attempt to remove native screen off animation failed - " + e.toString());
 				// MethodNotFoundException
 			}
 			// MethodNotFoundException
@@ -380,8 +397,8 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 	}
 	
 	private void refreshSettings() {
-		sPref.reload();
 
+		sPref.reload();
 
 		mEnabled = sPref.getBoolean(Common.Pref.Key.ENABLED, Common.Pref.Def.ENABLED);
 		mAnimationIndex = sPref.getInt(Common.Pref.Key.EFFECT, Common.Pref.Def.EFFECT);
@@ -399,5 +416,6 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 		mOverrideDelayValue = sPref.getInt(Pref.Key.DELAY_OVERRIDE_SPEED, Pref.Def.STOCK_DELAY);
 
 		mAnimationRunning = false;
+
 	}
 }

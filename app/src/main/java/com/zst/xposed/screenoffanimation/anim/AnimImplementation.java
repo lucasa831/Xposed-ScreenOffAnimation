@@ -56,9 +56,8 @@ public abstract class AnimImplementation {
 	
 	/**
 	 * Helper method to finish the animation after a delay
-	 * TODO: Rename method to reduce confusion with screen on
 	 */
-	public void finish(Context ctx, final ScreenOffAnim holder, int delay) {
+	public void releaseScreenOffAnimImpl(Context ctx, final ScreenOffAnim holder, int delay) {
 		if (delay <= 0) {
 			holder.finishScreenOffAnim();
 			if (mWakelock != null && mWakelock.isHeld()) {
