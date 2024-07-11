@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -31,10 +32,17 @@ import com.zst.xposed.screenoffanimation.widgets.IntervalSeekBar;
 public class ScreenOffFragment extends Fragment {
 	
 	private static ScreenOffFragment sScreenOffFragmentInstance;
-	
+
+	private Activity parentActivity;
+
+	public ScreenOffFragment(Activity activity) {
+		super();
+		parentActivity = activity;
+	}
+
 	public static ScreenOffFragment getInstance() {
 		if (sScreenOffFragmentInstance == null) {
-			sScreenOffFragmentInstance = new ScreenOffFragment();
+			sScreenOffFragmentInstance = new ScreenOffFragment(null);
 		}
 		return sScreenOffFragmentInstance;
 	}
@@ -146,14 +154,14 @@ public class ScreenOffFragment extends Fragment {
 	}
 	
 	void updateSettings() {
-		getActivity().sendBroadcast(new Intent(Common.BROADCAST_REFRESH_SETTINGS));
+		parentActivity.sendBroadcast(new Intent(Common.BROADCAST_REFRESH_SETTINGS));
 		loadPref();
 	}
 	
 	void previewEffect(boolean on) {
 		Intent i = new Intent(Common.BROADCAST_TEST_OFF_ANIMATION);
 		i.putExtra(Common.EXTRA_TEST_ANIMATION, mCurrentAnim);
-		getActivity().sendBroadcast(i);
+		parentActivity.sendBroadcast(i);
 	}
 	
 	public void loadPref() {

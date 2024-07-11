@@ -27,6 +27,7 @@ import com.zst.xposed.screenoffanimation.anim.SideFill;
 import com.zst.xposed.screenoffanimation.anim.TVBurnIn;
 import com.zst.xposed.screenoffanimation.anim.VertuSigTouch;
 import com.zst.xposed.screenoffanimation.anim.WP8;
+import com.zst.xposed.screenoffanimation.helpers.ScreenshotUtil;
 import com.zst.xposed.screenoffanimation.helpers.Utils;
 
 import java.util.List;
@@ -68,10 +69,10 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 	@Override
 	public void initZygote(StartupParam startupParam) throws Throwable {
 		sModRes = XModuleResources.createInstance(startupParam.modulePath, null);
-		//sPref = new XSharedPreferences(Common.PACKAGE_THIS, Common.Pref.PREF_MAIN);
-		sPref = getPref();
+		sPref = new XSharedPreferences(Common.PACKAGE_THIS, Common.Pref.PREF_MAIN);
+		//sPref = getPref();
 
-		if (Build.VERSION.SDK_INT >= 26) {
+		if (Build.VERSION.SDK_INT == 26) {
 			refreshSettings();
 		}
 
@@ -92,39 +93,19 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 		}
 		if (!lpparam.packageName.equals("android")) return;
 
-		if (Build.VERSION.SDK_INT <= 25) {
-			refreshSettings();
-		}
 
-		//refreshSettings();
-		
-		try { // late Android 4.2.1 onwards (built after Aug 15, 2012)
-			final Class<?> hookClass = XposedHelpers.findClass(
-					"com.android.server.power.PowerManagerService", lpparam.classLoader);
-			XposedBridge.hookAllMethods(hookClass, "goToSleepInternal", sScreenOffHook);
-			XposedBridge.hookAllMethods(hookClass, "goToSleepNoUpdateLocked", sScreenOffHook);
-			XposedBridge.hookAllMethods(hookClass, "wakeUpNoUpdateLocked", sScreenWakeHook);
-			XposedBridge.hookAllMethods(hookClass, "init", sInitHook);
-			hookDisableNativeScreenOffAnim(lpparam);
-			Utils.log("Done hooks for PowerManagerService (New Package)");
+		refreshSettings();
 
-			XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", true);
-		} catch (Throwable e) {
-			// Android 4.0 to Android 4.2.1 (built before Aug 15, 2012)
-			// https://github.com/android/platform_frameworks_base/commit/9630704ed3b265f008a8f64ec60a33cf9dcd3345
-			try {
-				final Class<?> hookClass = XposedHelpers.findClass(
-						"com.android.server.PowerManagerService", lpparam.classLoader);
-				XposedBridge.hookAllMethods(hookClass, "setPowerState", sScreenOffHook);
-				XposedBridge.hookAllMethods(hookClass, "sendNotificationLocked", sScreenWakeHook);
-				XposedBridge.hookAllMethods(hookClass, "init", sInitHook);
-				Utils.log("Done hooks for PowerManagerService (Old Package)");
 
-				// Disable native screen off anim.
-				XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", true);
-			} catch (Throwable e1) {}
-		}
+		ScreenshotUtil.setupCoreClasses(lpparam.classLoader);
 
+		setupHooksAndroid4(lpparam);
+
+		setupHooksAndroid5(lpparam);
+
+	}
+
+	private static void setupHooksAndroid5(LoadPackageParam lpparam) {
 		try{
 			// Disable android 5.0+ ColorFade  // by NUI
 			XposedHelpers.findAndHookMethod(XposedHelpers.findClass("com.android.server.display.DisplayPowerState", lpparam.classLoader),
@@ -163,9 +144,37 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 		} catch (Throwable e2) {
 			Utils.log("Attempt to remove native screen off animation failed - " + e2.toString());
 		}
-
 	}
-	
+
+	private void setupHooksAndroid4(LoadPackageParam lpparam) {
+		try { // late Android 4.2.1 onwards (built after Aug 15, 2012)
+			final Class<?> hookClass = XposedHelpers.findClass(
+					"com.android.server.power.PowerManagerService", lpparam.classLoader);
+			XposedBridge.hookAllMethods(hookClass, "goToSleepInternal", sScreenOffHook);
+			XposedBridge.hookAllMethods(hookClass, "goToSleepNoUpdateLocked", sScreenOffHook);
+			XposedBridge.hookAllMethods(hookClass, "wakeUpNoUpdateLocked", sScreenWakeHook);
+			XposedBridge.hookAllMethods(hookClass, "init", sInitHook);
+			hookDisableNativeScreenOffAnim(lpparam);
+			Utils.log("Done hooks for PowerManagerService (New Package)");
+
+			XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", true);
+		} catch (Throwable e) {
+			// Android 4.0 to Android 4.2.1 (built before Aug 15, 2012)
+			// https://github.com/android/platform_frameworks_base/commit/9630704ed3b265f008a8f64ec60a33cf9dcd3345
+			try {
+				final Class<?> hookClass = XposedHelpers.findClass(
+						"com.android.server.PowerManagerService", lpparam.classLoader);
+				XposedBridge.hookAllMethods(hookClass, "setPowerState", sScreenOffHook);
+				XposedBridge.hookAllMethods(hookClass, "sendNotificationLocked", sScreenWakeHook);
+				XposedBridge.hookAllMethods(hookClass, "init", sInitHook);
+				Utils.log("Done hooks for PowerManagerService (Old Package)");
+
+				// Disable native screen off anim.
+				XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", true);
+			} catch (Throwable e1) {}
+		}
+	}
+
 	private final XC_MethodHook sInitHook = new XC_MethodHook() {
 		@Override
 		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {

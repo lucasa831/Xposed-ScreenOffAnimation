@@ -60,8 +60,8 @@ public class MainActivity extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 					mPref.edit().clear().commit();
 					dialog.dismiss();
-					ScreenOffFragment.getInstance().loadPref();
-					ScreenOnFragment.getInstance().loadPref();
+					sScreenOffFragmentInstance.loadPref();
+					sScreenOnFragmentInstance.loadPref();
 				}
 			};
 			new AlertDialog.Builder(this)
@@ -73,20 +73,25 @@ public class MainActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
+
+	private ScreenOffFragment sScreenOffFragmentInstance;
+	private ScreenOnFragment sScreenOnFragmentInstance;
+
 	private void setup() {
 		findViewById(R.id.xposed_inactive).setVisibility(isXposedRunning() ? View.GONE : View.VISIBLE);
-		
+		final Activity activity = this;
+		sScreenOffFragmentInstance = new ScreenOffFragment(activity);
+		sScreenOnFragmentInstance = new ScreenOnFragment(activity);
+
 		mAdapter = new FragmentPagerAdapter(getFragmentManager()) {
 			@Override
 			@SuppressLint("ValidFragment")
 			public Fragment getItem(int position) {
 				switch (position) {
 				case 0:
-					return ScreenOffFragment.getInstance();
+					return sScreenOffFragmentInstance;
 				case 1:
-					return ScreenOnFragment.getInstance();
+					return sScreenOnFragmentInstance;
 				}
 				return new Fragment();
 			}

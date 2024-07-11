@@ -17,13 +17,10 @@
 
 package com.zst.xposed.screenoffanimation.helpers;
 
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
@@ -31,12 +28,46 @@ import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
 
+import com.zst.xposed.screenoffanimation.helpers.screenshot.ScreenshotAndroid13;
+import com.zst.xposed.screenoffanimation.helpers.screenshot.ScreenshotAndroid14;
+import com.zst.xposed.screenoffanimation.helpers.screenshot.ScreenshotAndroid9;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
+
 /**
  * These methods were taken from 
  * com.android.systemui.screenshot.GlobalScreenshot
  */
 public class ScreenshotUtil {
-	
+
+	//https://github.com/Genymobile/scrcpy/issues/2888
+
+	public static void setupCoreClasses(ClassLoader classLoader) {
+		if(Build.VERSION.SDK_INT >= 34) {
+			ScreenshotAndroid14.DISPLAYCONTROL_CLASS =
+					initializeClassXposed("com.android.server.display.DisplayControl", classLoader);
+		}
+	}
+
+	public static Class<?> initializeClassXposed(String className, ClassLoader classLoader) {
+		try {
+
+			Class<?> aClass = XposedHelpers.findClass(className, classLoader);
+
+			XposedBridge.log("Class initialized: " + className);
+
+			return aClass;
+		} catch (XposedHelpers.ClassNotFoundError e) {
+			XposedBridge.log("Class init failed: " + className + ", error:" + e.getMessage());
+		}
+		return null;
+	}
+
+
 	public static Bitmap takeScreenshot(Context context) {
 		Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE))
 				.getDefaultDisplay();
@@ -61,27 +92,14 @@ public class ScreenshotUtil {
 		
 		// Take the screenshot
 		Bitmap screenBitmap;
-		if (Build.VERSION.SDK_INT >= 28) {
-			//the method sourfacecontrol.screenshot(int, int) isn't present on 9.x+ source code
-
-			Class<?> surface_class = XposedHelpers.findClass("android.view.SurfaceControl", null);
-			//IBinder displaybinder = (IBinder)  XposedHelpers.callStaticMethod(surface_class, "getBuiltInDisplay", 0);
-			/*screenshot(Rect sourceCrop, int width, int height,
-			int minLayer, int maxLayer, boolean useIdentityTransform,
-			int rotation)*/
-			int rotate = display.getRotation();
-
-
-			//not sure why but it's inverting for me so...
-			if (rotate == 1) rotate = 3;
-			else if(rotate == 3) rotate = 1;
-
-
-			screenBitmap = (Bitmap) XposedHelpers.callStaticMethod(surface_class, "screenshot", new Rect(),
-						(int) dims[0], (int) dims[1], 0, 9, false, rotate);
-
-			//XposedBridge.log(display.getRotation() + "  -  " + rotate);
-
+		if (Build.VERSION.SDK_INT >= 34) {
+			final IBinder displayToken = getBuiltInDisplay();
+			screenBitmap = ScreenshotAndroid14.screenshotAndroid14(displayToken, dims);
+		} else if (Build.VERSION.SDK_INT == 33) {
+			final IBinder displayToken = getBuiltInDisplay();
+			screenBitmap = ScreenshotAndroid13.screenshotAndroid13(displayToken, dims);
+		} else if (Build.VERSION.SDK_INT >= 28) {
+			screenBitmap = ScreenshotAndroid9.screenshotAndroid9(display, dims);
 		}
 		else if (Build.VERSION.SDK_INT >= 18) {
 			Class<?> surface_class = XposedHelpers.findClass("android.view.SurfaceControl", null);
@@ -116,7 +134,41 @@ public class ScreenshotUtil {
 		
 		return screenBitmap;
 	}
-	
+
+
+	//https://cs.android.com/android/platform/superproject/main/+/main:frameworks/base/core/java/android/window/ScreenCapture.java;drc=8aacf6b6a42b9b90939b8874980734dbef6308de;l=186
+
+	private static Method getGetBuiltInDisplayMethod() throws NoSuchMethodException {
+		Method getBuiltInDisplayMethod = null;
+		// the method signature has changed in Android Q
+		// <https://github.com/Genymobile/scrcpy/issues/586>
+		if (Build.VERSION.SDK_INT < 29) {
+			getBuiltInDisplayMethod = ScreenshotAndroid13.SURFACECONTROL_CLASS.getMethod("getBuiltInDisplay", int.class);
+		} else if (Build.VERSION.SDK_INT < 34){
+			getBuiltInDisplayMethod = ScreenshotAndroid13.SURFACECONTROL_CLASS.getMethod("getInternalDisplayToken");
+		} else {
+			getBuiltInDisplayMethod = ScreenshotAndroid14.DISPLAYCONTROL_CLASS.getMethod("getPhysicalDisplayToken", long.class);
+		}
+
+		return getBuiltInDisplayMethod;
+	}
+
+	public static IBinder getBuiltInDisplay() {
+		try {
+			Method method = getGetBuiltInDisplayMethod();
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || Build.VERSION.SDK_INT >= 34) {
+				// call getBuiltInDisplay(0)
+				return (IBinder) method.invoke(null, 0);
+			}
+			// call getInternalDisplayToken()
+			return (IBinder) method.invoke(null);
+		} catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+			XposedBridge.log("getBuiltInDisplay failed: " + e.getMessage());
+			return null;
+		}
+	}
+
+
 	private static float getDegreesForRotation(int value) {
 		switch (value) {
 		case Surface.ROTATION_90:
@@ -128,4 +180,6 @@ public class ScreenshotUtil {
 		}
 		return 0f;
 	}
+
+
 }

@@ -1,6 +1,7 @@
 package com.zst.xposed.screenoffanimation.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -34,10 +35,17 @@ public class ScreenOnFragment extends ScreenOffFragment {
     TextView mDelaySpeedText;
     IntervalSeekBar mSeekDelaySpeed;
 
+	private Activity parentActivity;
+
+	public ScreenOnFragment(Activity activity) {
+		super(activity);
+		parentActivity = activity;
+	}
+
 
 	public static ScreenOnFragment getInstance() {
 		if (sScreenOnFragmentInstance == null) {
-			sScreenOnFragmentInstance = new ScreenOnFragment();
+			sScreenOnFragmentInstance = new ScreenOnFragment(null);
 		}
 		return sScreenOnFragmentInstance;
 	}
@@ -175,7 +183,7 @@ public class ScreenOnFragment extends ScreenOffFragment {
 	void previewEffect(boolean on) {
 		Intent i = new Intent(Common.BROADCAST_TEST_ON_ANIMATION);
 		i.putExtra(Common.EXTRA_TEST_ANIMATION, mCurrentAnim);
-		getActivity().sendBroadcast(i);
+		parentActivity.sendBroadcast(i);
 	}
 	
 	@Override
