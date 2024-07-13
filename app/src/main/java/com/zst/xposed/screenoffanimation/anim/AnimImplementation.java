@@ -81,7 +81,9 @@ public abstract class AnimImplementation {
 		new Handler(ctx.getMainLooper()).post(new Runnable() {
 			@Override
 			public void run() {
-				if (MainXposed.mOnAnimationRunning) return;
+				if (MainXposed.mOnAnimationRunning) {
+					return;
+				}
 				MainXposed.mOnAnimationRunning = true;
 				try {
 					animateScreenOn(ctx, wm, res);

@@ -1,10 +1,11 @@
 package com.zst.xposed.screenoffanimation;
 
+import static android.content.Context.RECEIVER_EXPORTED;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.os.Build;
@@ -30,6 +31,7 @@ import com.zst.xposed.screenoffanimation.anim.WP8;
 import com.zst.xposed.screenoffanimation.helpers.ScreenshotUtil;
 import com.zst.xposed.screenoffanimation.helpers.Utils;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -91,11 +93,12 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 			//refreshSettings();
 			return;
 		}
-		if (!lpparam.packageName.equals("android")) return;
 
+		if (!lpparam.packageName.equals("android")) {
+			return;
+		}
 
 		refreshSettings();
-
 
 		ScreenshotUtil.setupCoreClasses(lpparam.classLoader);
 
@@ -152,33 +155,57 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 					"com.android.server.power.PowerManagerService", lpparam.classLoader);
 			XposedBridge.hookAllMethods(hookClass, "goToSleepInternal", sScreenOffHook);
 			XposedBridge.hookAllMethods(hookClass, "goToSleepNoUpdateLocked", sScreenOffHook);
-			XposedBridge.hookAllMethods(hookClass, "wakeUpNoUpdateLocked", sScreenWakeHook);
-			XposedBridge.hookAllMethods(hookClass, "init", sInitHook);
+			if(Build.VERSION.SDK_INT <= 30) {
+				//method removed on Android 12 or newer
+				XposedBridge.hookAllMethods(hookClass, "wakeUpNoUpdateLocked", sScreenWakeHook);
+			} else {
+				XposedBridge.hookAllMethods(hookClass, "wakePowerGroupLocked", sScreenWakeHookNew);
+			}
+			XposedBridge.hookAllMethods(hookClass, "systemReady", sInitHookNew);
 			hookDisableNativeScreenOffAnim(lpparam);
 			Utils.log("Done hooks for PowerManagerService (New Package)");
 
 			XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", true);
 		} catch (Throwable e) {
-			// Android 4.0 to Android 4.2.1 (built before Aug 15, 2012)
-			// https://github.com/android/platform_frameworks_base/commit/9630704ed3b265f008a8f64ec60a33cf9dcd3345
-			try {
-				final Class<?> hookClass = XposedHelpers.findClass(
-						"com.android.server.PowerManagerService", lpparam.classLoader);
-				XposedBridge.hookAllMethods(hookClass, "setPowerState", sScreenOffHook);
-				XposedBridge.hookAllMethods(hookClass, "sendNotificationLocked", sScreenWakeHook);
-				XposedBridge.hookAllMethods(hookClass, "init", sInitHook);
-				Utils.log("Done hooks for PowerManagerService (Old Package)");
-
-				// Disable native screen off anim.
-				XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", true);
-			} catch (Throwable e1) {}
+			setupAndroid4Fallback(lpparam);
 		}
+	}
+
+	private void setupAndroid4Fallback(LoadPackageParam lpparam) {
+		// Android 4.0 to Android 4.2.1 (built before Aug 15, 2012)
+		// https://github.com/android/platform_frameworks_base/commit/9630704ed3b265f008a8f64ec60a33cf9dcd3345
+		try {
+			final Class<?> hookClass = XposedHelpers.findClass(
+					"com.android.server.PowerManagerService", lpparam.classLoader);
+			XposedBridge.hookAllMethods(hookClass, "setPowerState", sScreenOffHook);
+			XposedBridge.hookAllMethods(hookClass, "sendNotificationLocked", sScreenWakeHook);
+			XposedBridge.hookAllMethods(hookClass, "init", sInitHook);
+			Utils.log("Done hooks for PowerManagerService (Old Package)");
+
+			// Disable native screen off anim.
+			XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", true);
+		} catch (Throwable e1) {}
 	}
 
 	private final XC_MethodHook sInitHook = new XC_MethodHook() {
 		@Override
 		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+			XposedBridge.log("Initializing init hook");
 			mContext = (Context) param.args[0];
+			mWm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+			installBroadcast();
+		}
+	};
+
+	private final XC_MethodHook sInitHookNew = new XC_MethodHook() {
+		@Override
+		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+			XposedBridge.log("Initializing new init hook");
+
+			Field field = param.thisObject.getClass().getDeclaredField("mContext");
+			field.setAccessible(true);
+
+			mContext = (Context) field.get(param.thisObject);
 			mWm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
 			installBroadcast();
 		}
@@ -189,20 +216,24 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 		protected Object replaceHookedMethod(final MethodHookParam param) throws Throwable {
 			if (param.method.getName().equals("setPowerState")) {
 				// Android 4.0 to Android 4.2.1 (built before Aug 15, 2012)
-				if ((Integer) param.args[0] != 0)
+				if ((Integer) param.args[0] != 0) {
 					return Utils.callOriginal(param);
+				}
 			} else if (param.method.getName().equals("goToSleepNoUpdateLocked")) {
 				// reason != GO_TO_SLEEP_REASON_TIMEOUT
-				if ((Integer) param.args[1] != 2)
+				if ((Integer) param.args[1] != 2) {
 					return Utils.callOriginal(param);
-				
-				if (!Utils.isValidSleepEvent(param.thisObject, (Long) param.args[0]))
+				}
+
+				if (!Utils.isValidSleepEvent(param.thisObject, (Long) param.args[0])) {
 					return false;
+				}
 			}
 			
-			if (!mEnabled || mDontAnimate)
+			if (!mEnabled || mDontAnimate) {
 				return Utils.callOriginal(param);
-			
+			}
+
 			if (mContext == null) {
 				// If the context cannot be retrieved from the init method,
 				try {
@@ -242,16 +273,19 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 	private final XC_MethodHook sScreenWakeHook = new XC_MethodHook() {
 		@Override
 		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-			if (!mOnEnabled) return;
-			
+			if (!mOnEnabled) {
+				return;
+			}
+
 			if (param.method.getName().equals("sendNotificationLocked")) {
-				if ((Boolean) param.args[0] == false)
+				if ((Boolean) param.args[0] == false) {
 					return;
+				}
 			} else if ((Boolean) param.getResult() == false) {
 				// not updating state
 				return;
 			}
-			
+
 			if (mContext == null) {
 				// If the context cannot be retrieved from the init method,
 				try {
@@ -277,6 +311,49 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 			}
 		}
 	};
+
+	private final XC_MethodHook sScreenWakeHookNew = new XC_MethodHook() {
+		@Override
+		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+			if (!mOnEnabled) {
+				return;
+			}
+
+//			probably I should hook only this power group
+//			final PowerGroup powerGroup = mPowerGroups.get(Display.DEFAULT_DISPLAY_GROUP);
+//
+//			final PowerGroup powerGroup, long eventTime,
+//			            @WakeReason int reason, String details, int uid, String opPackageName, int opUid
+
+//			Object powerGroup = (Object) param.args[0];
+//
+//			Field mWakefulnessField = powerGroup.getClass().getDeclaredField("mWakefulness");
+//			mWakefulnessField.setAccessible(true);
+//			int currentWakefulness = (int) mWakefulnessField.get(powerGroup);
+//
+
+//			I should probably enable this check to avoid unneeded animations,
+//			but it's not working with... probably because of the after hook,
+//			the screen will already be awake
+
+//			if(currentWakefulness == 1) { // WAKEFULNESS_AWAKE = 1
+//				return;
+//			}
+
+
+			final AnimImplementation anim = findAnimation(mOnAnimationIndex, true);
+			if (anim != null && anim.supportsScreenOn()) {
+				try {
+					anim.anim_speed = mOnAnimationSpeed;
+					anim.animateScreenOnWithHandler(mContext, mWm, sModRes);
+				} catch (Exception e) {
+					// So we don't crash system.
+					Utils.toast(mContext, sModRes.getString(R.string.error_animating));
+				}
+			}
+		}
+	};
+
 	
 	private void hookMainActivity(LoadPackageParam lpp) {
 		final Class<?> cls = XposedHelpers.findClass(MainActivity.class.getName(), lpp.classLoader);
@@ -317,44 +394,52 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 		filter.addAction(Common.BROADCAST_REFRESH_SETTINGS);
 		filter.addAction(Common.BROADCAST_TEST_OFF_ANIMATION);
 		filter.addAction(Common.BROADCAST_TEST_ON_ANIMATION);
-		
-		mContext.registerReceiver(new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context c, Intent i) {
-				if (i.getAction().equals(Common.BROADCAST_TEST_OFF_ANIMATION)) {
-					final int anim_id = i.getIntExtra(Common.EXTRA_TEST_ANIMATION,
-							Common.Pref.Def.EFFECT);
-					AnimImplementation anim = findAnimation(anim_id, false);
-					if (anim != null) {
-						try {
-							anim.anim_speed = mAnimationSpeed;
-							anim.animateScreenOffWithHandler(mContext, mWm, null, sModRes);
-						} catch (Exception e) {
-							// So we don't crash system.
-							Utils.toast(mContext, sModRes.getString(R.string.error_animating));
-						}
-					}
-					
-				}else if (i.getAction().equals(Common.BROADCAST_TEST_ON_ANIMATION)) {
-					final int anim_id = i.getIntExtra(Common.EXTRA_TEST_ANIMATION,
-							Common.Pref.Def.EFFECT);
-					AnimImplementation anim = findAnimation(anim_id, true);
-					if (anim != null) {
-						try {
-							anim.anim_speed = mOnAnimationSpeed;
-							anim.animateScreenOnWithHandler(mContext, mWm, sModRes);
-						} catch (Exception e) {
-							// So we don't crash system.
-							Utils.toast(mContext, sModRes.getString(R.string.error_animating));
-						}
-					}
-					
-				} else if (i.getAction().equals(Common.BROADCAST_REFRESH_SETTINGS)) {
-					refreshSettings();
-				}
-			}
-		}, filter);
+
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+			mContext.registerReceiver(broadcastReceiver, filter, RECEIVER_EXPORTED);
+		}else {
+			mContext.registerReceiver(broadcastReceiver, filter);
+		}
+
 	}
+
+	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context c, Intent i) {
+			if (i.getAction().equals(Common.BROADCAST_TEST_OFF_ANIMATION)) {
+				final int anim_id = i.getIntExtra(Common.EXTRA_TEST_ANIMATION,
+						Common.Pref.Def.EFFECT);
+				AnimImplementation anim = findAnimation(anim_id, false);
+				if (anim != null) {
+					try {
+						anim.anim_speed = mAnimationSpeed;
+						anim.animateScreenOffWithHandler(mContext, mWm, null, sModRes);
+					} catch (Exception e) {
+						// So we don't crash system.
+						Utils.toast(mContext, sModRes.getString(R.string.error_animating));
+					}
+				}
+
+			}else if (i.getAction().equals(Common.BROADCAST_TEST_ON_ANIMATION)) {
+				final int anim_id = i.getIntExtra(Common.EXTRA_TEST_ANIMATION,
+						Common.Pref.Def.EFFECT);
+				AnimImplementation anim = findAnimation(anim_id, true);
+				if (anim != null) {
+					try {
+						anim.anim_speed = mOnAnimationSpeed;
+						anim.animateScreenOnWithHandler(mContext, mWm, sModRes);
+					} catch (Exception e) {
+						// So we don't crash system.
+						Utils.toast(mContext, sModRes.getString(R.string.error_animating));
+					}
+				}
+
+			} else if (i.getAction().equals(Common.BROADCAST_REFRESH_SETTINGS)) {
+				refreshSettings();
+			}
+		}
+	};
 	
 	private AnimImplementation findAnimation(int id, boolean on) {
 		switch (id) {
@@ -406,6 +491,11 @@ public class MainXposed implements IXposedHookZygoteInit, IXposedHookLoadPackage
 	}
 	
 	private void refreshSettings() {
+
+		if(sPref == null) {
+			XposedBridge.log("Attempt to reload null sharedPreferences...");
+			return;
+		}
 
 		sPref.reload();
 

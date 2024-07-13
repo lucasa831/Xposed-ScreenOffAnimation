@@ -26,15 +26,22 @@ public class MainActivity extends Activity {
 	
 	SharedPreferences mPref;
 	FragmentPagerAdapter mAdapter;
-	
+
+	private ScreenOffFragment sScreenOffFragmentInstance;
+	private ScreenOnFragment sScreenOnFragmentInstance;
+
 	@SuppressLint("WorldReadableFiles")
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_viewpager);
-		
-		mPref = getSharedPreferences(Pref.PREF_MAIN, Context.MODE_WORLD_READABLE);
+
+		if(isXposedRunning()) {
+			//will fail if not...
+			mPref = getSharedPreferences(Pref.PREF_MAIN, Context.MODE_WORLD_READABLE);
+		}
+
 		setup();
 	}
 	
@@ -47,6 +54,10 @@ public class MainActivity extends Activity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		if(!isXposedRunning()) {
+			return true;
+		}
+
 		menu.add(Menu.NONE, MENU_RESET_SETTINGS, 0, R.string.menu_reset_settings_title);
 		return true;
 	}
@@ -55,15 +66,12 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case MENU_RESET_SETTINGS:
-			DialogInterface.OnClickListener click = new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					mPref.edit().clear().commit();
-					dialog.dismiss();
-					sScreenOffFragmentInstance.loadPref();
-					sScreenOnFragmentInstance.loadPref();
-				}
-			};
+			DialogInterface.OnClickListener click = (dialog, which) -> {
+                mPref.edit().clear().commit();
+                dialog.dismiss();
+                sScreenOffFragmentInstance.loadPref();
+                sScreenOnFragmentInstance.loadPref();
+            };
 			new AlertDialog.Builder(this)
 					.setMessage(getResources().getString(R.string.menu_reset_settings_dialog))
 					.setPositiveButton(android.R.string.yes, click)
@@ -74,14 +82,15 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private ScreenOffFragment sScreenOffFragmentInstance;
-	private ScreenOnFragment sScreenOnFragmentInstance;
-
 	private void setup() {
 		findViewById(R.id.xposed_inactive).setVisibility(isXposedRunning() ? View.GONE : View.VISIBLE);
+
 		final Activity activity = this;
-		sScreenOffFragmentInstance = new ScreenOffFragment(activity);
-		sScreenOnFragmentInstance = new ScreenOnFragment(activity);
+		sScreenOffFragmentInstance = new ScreenOffFragment();
+		sScreenOffFragmentInstance.provideContext(activity, isXposedRunning());
+
+		sScreenOnFragmentInstance = new ScreenOnFragment();
+		sScreenOnFragmentInstance.provideContext(activity, isXposedRunning());
 
 		mAdapter = new FragmentPagerAdapter(getFragmentManager()) {
 			@Override
@@ -112,10 +121,10 @@ public class MainActivity extends Activity {
 				return 2;
 			}
 		};
-		ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+		ViewPager viewPager = findViewById(R.id.view_pager);
 		viewPager.setAdapter(mAdapter);
 		
-		PagerTabStrip pts = (PagerTabStrip) findViewById(R.id.pager_title_strip);
+		PagerTabStrip pts = findViewById(R.id.pager_title_strip);
 		pts.setTabIndicatorColor(getResources().getColor(R.color.theme_color));
 		pts.setDrawFullUnderline(false);
 		pts.setTextColor(getResources().getColor(R.color.theme_color));
